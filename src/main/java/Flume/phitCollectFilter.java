@@ -46,8 +46,12 @@ public class phitCollectFilter implements Interceptor {
             try {
                 body = new String(event.getBody(), Charsets.UTF_8);
 
-
-                String message = body.split("\"message\":\"")[1].split("\",")[0].replace("\\","");
+                String message;
+                if (body.startsWith("{")){
+                    message = body.split("\"message\":\"")[1].split("\",")[0].replace("\\","");
+                }else {
+                    message = body;
+                }
 //                System.out.println(message);
                 //进行时间解析精确到天和小时
 
@@ -73,7 +77,7 @@ public class phitCollectFilter implements Interceptor {
 
                 phitEvents.add(event);
             }catch(Exception e){
-                logger.error("phitCollectFilter Exception error.["+body+"],"+e.getMessage());
+                logger.error("phitCollectFilter Exception error_body.["+body+"],"+e.getMessage());
             }
         }
 
